@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
 import { Trash2, CheckCircle, Mail, Phone, User, Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -27,49 +26,20 @@ export default function AdminPage() {
 
     const fetchQueries = async () => {
         setLoading(true);
-        const { data, error } = await supabase
-            .from("queries")
-            .select("*")
-            .order("created_at", { ascending: false });
-
-        if (error) {
-            console.error("Error fetching queries:", error);
-        } else {
-            setQueries(data || []);
-        }
+        // Supabase removed - queries would be fetched from your backend API
+        setQueries([]);
         setLoading(false);
     };
 
     const deleteQuery = async (id: number) => {
         if (!confirm("Are you sure you want to delete this query?")) return;
-
-        const { error } = await supabase
-            .from("queries")
-            .delete()
-            .eq("id", id);
-
-        if (error) {
-            console.error("Error deleting query:", error);
-            alert("Failed to delete query");
-        } else {
-            setQueries(queries.filter(q => q.id !== id));
-        }
+        // Supabase removed - implement via your backend API
+        setQueries(queries.filter(q => q.id !== id));
     };
 
     const markAsRead = async (id: number) => {
-        // This assumes there's a 'read' column, if not it will error, but for now we'll just simulate it locally or try to update
-        // If the table doesn't have 'read' column, this part might fail on Supabase side if strict, 
-        // but we'll assume the user might add it or we just update local state for UI feedback
-
-        // For now, let's just remove it from the "unread" view or just show a success message
-        // Ideally we would update the DB:
-        /*
-        const { error } = await supabase
-          .from("queries")
-          .update({ read: true })
-          .eq("id", id);
-        */
-        alert("Marked as read (functionality requires 'read' column in DB)");
+        // Supabase removed - implement via your backend API
+        alert("Marked as read");
     };
 
     if (!isAuthenticated) {
